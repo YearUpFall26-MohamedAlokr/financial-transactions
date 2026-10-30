@@ -7,11 +7,9 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class FinancialTransactions {
 
-    static Scanner sc = new Scanner(System.in);
     static ArrayList<Transaction> transactions = new ArrayList<>();
 
     public static void main(String[] args) {
@@ -48,7 +46,7 @@ public class FinancialTransactions {
             System.out.println("3- Enter L to Ledger");
             System.out.println("4- Enter X to Quit");
 
-            char option= sc.nextLine().toUpperCase().charAt(0);
+            char option= Console.promptForChar("Enter Your Action Character");
             switch (option) {
                 case 'D':
                     AddDeposit();
@@ -63,11 +61,12 @@ public class FinancialTransactions {
                     running=false;
                     break;
                 default:
-                    System.out.println("Invalid Option Please Try Again");
+                    System.out.println("Invalid Choice Please Try Again");
             }
 
         }
 }
+
 public static double MyBalance() {
         double balance = 0;
         for (Transaction t: transactions){
@@ -75,22 +74,20 @@ public static double MyBalance() {
 
         }return balance;
 }
+
 public static void AddDeposit() {
-    System.out.print("Amount: ");
-    double amount = Double.parseDouble(sc.nextLine());
 
-    System.out.print("Vendor: ");
-    String vendor = sc.nextLine();
-
-    System.out.print("Description: ");
-    String description = sc.nextLine();
-
+    double amount = Console.promptForDouble("Amount: ");
+    String vendor = Console.promptForString("Vendor");
+    String description = Console.promptForString("Description");
     saveTransaction( amount, vendor,description);
 }
 
 public static void MakePayment(){
-        System.out.println("Enter Amount to Deposit");
-        double amount=sc.nextDouble();
+    double amount = -Math.abs(Console.promptForDouble("Amount: "));
+    String vendor = Console.promptForString("Vendor: ");
+    String description = Console.promptForString("Description: ");
+    saveTransaction( amount, vendor,description);
 }
 
 public static void Ledger(){
