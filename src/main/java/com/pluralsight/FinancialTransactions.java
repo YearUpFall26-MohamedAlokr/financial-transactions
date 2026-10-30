@@ -46,7 +46,7 @@ public class FinancialTransactions {
             System.out.println("3- Enter L to Ledger");
             System.out.println("4- Enter X to Quit");
 
-            char option= Console.promptForChar("Enter Your Action Character");
+            char option= Console.promptForChar("Enter Your Action Character: ");
             switch (option) {
                 case 'D':
                     AddDeposit();
@@ -78,9 +78,18 @@ public static double MyBalance() {
 public static void AddDeposit() {
 
     double amount = Console.promptForDouble("Amount: ");
-    String vendor = Console.promptForString("Vendor");
-    String description = Console.promptForString("Description");
-    saveTransaction( amount, vendor,description);
+    if (amount < 0){
+        amount = 0;
+        String vendor = "------";
+        String description = "Negative Deposit Attempted";
+        saveTransaction(amount, vendor, description);
+        System.out.println("Negative Amount Detected \nYour Deposit Can't Be Processed");
+    }else {
+        String vendor = Console.promptForString("Vendor: ");
+        String description = Console.promptForString("Description: ");
+        saveTransaction(amount, vendor, description);
+    }
+
 }
 
 public static void MakePayment(){
@@ -107,6 +116,10 @@ public static void saveTransaction( double amount, String vendor,String descript
                     time.withNano(0) + "|" + description + "|" + vendor + "|" + amount + "\n");
             writer.close();
             System.out.println("Transaction Saved Successfully.");
+            Transaction transaction = new Transaction(date.toString(), time.withNano(0)
+                    .toString(), description, vendor, amount);
+
+            transactions.add(transaction);
 
         } catch (IOException e) {
             System.out.println("Error Saving");
