@@ -17,6 +17,7 @@ public class FinancialTransactions {
         MainMenu();
     }
     public static void LoadAccount() {
+        transactions.clear();
     try {
         BufferedReader reader = new BufferedReader(new FileReader("transactions.csv"));
         String line;
@@ -26,8 +27,9 @@ public class FinancialTransactions {
             String[] parts = line.split("\\|");
 
             Transaction transaction = new Transaction(parts[0], parts[1], parts[2], parts[3], Double.parseDouble(parts[4]));
-
-            transactions.add(transaction);
+            if(!transactions.contains(transaction)){
+                transactions.add(transaction);
+            }
         }
     }catch (IOException e){
             System.out.println("+ You have No Balance");
@@ -41,10 +43,10 @@ public class FinancialTransactions {
             System.out.println("Your Current Balance is $"+MyBalance());
             System.out.println("_______________________________");
             System.out.println("** Welcome to FinancialTransactions Menu **");
-            System.out.println("1- Enter D to Add Deposit");
-            System.out.println("2- Enter P to Make Payment");
-            System.out.println("3- Enter L to Ledger");
-            System.out.println("4- Enter X to Quit");
+            System.out.println("1- Enter D To Add Deposit");
+            System.out.println("2- Enter P To Make Payment");
+            System.out.println("3- Enter L To Ledger");
+            System.out.println("4- Enter X To Quit");
 
             char option= Console.promptForChar("Enter Your Action Character: ");
             switch (option) {
@@ -65,9 +67,10 @@ public class FinancialTransactions {
             }
 
         }
-}
+    }
 
-public static double MyBalance() {
+
+    public static double MyBalance() {
         double balance = 0;
         for (Transaction t: transactions){
             balance+=t.getAmount();
@@ -75,7 +78,7 @@ public static double MyBalance() {
         }return balance;
 }
 
-public static void AddDeposit() {
+    public static void AddDeposit() {
 
     double amount = Console.promptForDouble("Amount: ");
     if (amount < 0){
@@ -92,18 +95,51 @@ public static void AddDeposit() {
 
 }
 
-public static void MakePayment(){
+    public static void MakePayment(){
     double amount = -Math.abs(Console.promptForDouble("Amount: "));
     String vendor = Console.promptForString("Vendor: ");
     String description = Console.promptForString("Description: ");
     saveTransaction( amount, vendor,description);
 }
 
-public static void Ledger(){
+    public static void Ledger(){
+    boolean running = true;
+    while(running) {
+        System.out.println("_______________________________");
+        System.out.println("Your Current Balance is $"+MyBalance());
+        System.out.println("_______________________________");
+        System.out.println("** Welcome to FinancialTransactions Menu **");
+        System.out.println("1- Enter A To Display All Transactions");
+        System.out.println("2- Enter D To Display All Deposits");
+        System.out.println("3- Enter P To Display All Payments");
+        System.out.println("4- Enter R For Reports");
+        System.out.println("5- Enter H To Quit");
 
+        char option= Console.promptForChar("Enter Your Action Character: ");
+        switch (option) {
+            case 'A':
+                DisplayAllEntries();
+                break;
+            case 'D':
+                DisplayDeposits();
+                break;
+            case 'P':
+                DisplayPayments();
+                break;
+            case 'R':
+                Reports();
+                break;
+            case 'H':
+                running=false;
+                break;
+            default:
+                System.out.println("Invalid Choice Please Try Again");
+        }
+
+    }
 }
 
-public static void saveTransaction( double amount, String vendor,String description){
+    public static void saveTransaction( double amount, String vendor,String description){
 
         LocalDate date = LocalDate.now();
         LocalTime time = LocalTime.now();
@@ -125,5 +161,38 @@ public static void saveTransaction( double amount, String vendor,String descript
             System.out.println("Error Saving");
         }
     }
-}
 
+    public static void DisplayAllEntries(){
+        LoadAccount();
+        for (int i = transactions.size() - 1; i >= 0; i--) {
+            System.out.println(transactions.get(i));
+        }
+    }
+
+    public static void DisplayDeposits(){
+        LoadAccount();
+        for (int i = transactions.size() - 1; i >= 0; i--) {
+            Transaction t = transactions.get(i);
+            if(  t.getAmount()>0 && ( !t.getDescription().equals("Negative Deposit Attempted") )  ){
+                System.out.println(t.toString());
+            }
+        }
+    }
+
+    public static void DisplayPayments(){
+        LoadAccount();
+        for (int i = transactions.size() - 1; i >= 0; i--) {
+            Transaction t = transactions.get(i);
+            if(  t.getAmount()<0 && ( !t.getDescription().equals("Negative Deposit Attempted") )  ){
+                System.out.println(t.toString());
+            }
+        }
+    }
+
+    public static void Reports(){
+
+    }
+
+
+
+}

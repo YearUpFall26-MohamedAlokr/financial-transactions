@@ -15,14 +15,9 @@ public class Transaction {
         this.amount = amount;
     }
 
-    public String getDate() {
-        return date;
+    public String getDescription() {
+        return description;
     }
-
-    public String getVendor() {
-        return vendor;
-    }
-
     public double getAmount() {
         return amount;
     }
