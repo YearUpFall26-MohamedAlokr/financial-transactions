@@ -28,7 +28,8 @@ public class Console {
         while (true) {
             try {
                 System.out.print(prompt);
-                return Integer.parseInt(scanner.nextLine());
+                int value=Integer.parseInt(scanner.nextLine());
+                return value;
             } catch (NumberFormatException e) {
                 System.out.println("Please enter a valid integer.");
             }

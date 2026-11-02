@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 public class FinancialTransactions {
 
@@ -32,6 +33,7 @@ public class FinancialTransactions {
                 transactions.add(transaction);
             }
         }
+        reader.close();
     }catch (IOException e){
             System.out.println("+ You have No Balance");
     }
@@ -40,14 +42,14 @@ public class FinancialTransactions {
     public static void MainMenu() {
         boolean running = true;
         while(running) {
-            System.out.println("_______________________________");
+            System.out.println("_________________________________");
             System.out.println("Your Current Balance is $"+MyBalance());
-            System.out.println("_______________________________");
+            System.out.println("__________________________________");
             System.out.println("** Welcome to FinancialTransactions Menu **");
             System.out.println("1- Enter D To Add Deposit");
             System.out.println("2- Enter P To Make Payment");
             System.out.println("3- Enter L To Ledger");
-            System.out.println("4- Enter X To Quit");
+            System.out.println("4- Enter X To Exit the Program");
 
             char option= Console.promptForChar("Enter Your Action Character: ");
             switch (option) {
@@ -113,7 +115,7 @@ public class FinancialTransactions {
         System.out.println("2- Enter D To Display All Deposits");
         System.out.println("3- Enter P To Display All Payments");
         System.out.println("4- Enter R For Reports");
-        System.out.println("5- Enter H To Quit");
+        System.out.println("5- Enter H To Go Back To The Main Menu");
 
         char option= Console.promptForChar("Enter Your Action Character: ");
         switch (option) {
@@ -146,7 +148,7 @@ public class FinancialTransactions {
 
         try {
             FileWriter writer =
-                    new FileWriter("transactions.csv", true);
+                    new FileWriter("transactions.csv",true);
 
             writer.write(date + "|" +
                     time.withNano(0) + "|" + description + "|" + vendor + "|" + amount + "\n");
@@ -198,12 +200,13 @@ public class FinancialTransactions {
             System.out.println(" 3) Year To Date");
             System.out.println(" 4) Previous Year ");
             System.out.println(" 5) Search by Vendor");
+            System.out.println(" 6) Custom Search");
             System.out.println(" 0) Go Back to the Ledger page");
 
             int option= Console.promptForInt("Enter Your Action Number: ");
             switch (option) {
                 case 1:
-                    MontToDate();
+                    MonthToDate();
                     break;
                 case 2:
                     PreviousMonth();
@@ -217,6 +220,9 @@ public class FinancialTransactions {
                 case 5:
                     SearchByVendor();
                     break;
+                case 6:
+                    CustomSearch();
+                    break;
                 case 0:
                     running=false;
                     break;
@@ -225,11 +231,9 @@ public class FinancialTransactions {
             }
     }
 
-
-
 }
 
-    public static void MontToDate(){
+    public static void MonthToDate(){
         LocalDate MonthStart=LocalDate.now().withDayOfMonth(1);
 
         for(int i=transactions.size() - 1; i >= 0; i--){
@@ -265,7 +269,7 @@ public class FinancialTransactions {
             Transaction t = transactions.get(i);
             LocalDate transactionDate=LocalDate.parse(t.getDate());
 
-            if(transactionDate.isAfter(StartDayYear)){
+            if(transactionDate.isBefore(StartDayYear)){
                 System.out.println(t.toString());
             }
         }
@@ -285,6 +289,71 @@ public class FinancialTransactions {
     }
 
     public static void SearchByVendor(){
+        YearToDate();
+        System.out.println("_________________________________________________________");
+        String vendor=Console.promptForString("Enter Vendor Name: ");
+        System.out.println("_________________________________________________________");
+
+        for(int i=transactions.size() - 1; i >= 0; i--){
+            Transaction t = transactions.get(i);
+
+            if (t.getVendor().equalsIgnoreCase(vendor)){
+                System.out.println(t.toString());
+            }
+        }
+
+
+    }
+
+    public static void CustomSearch(){
+        System.out.println("___________________________________________________________");
+        System.out.println("Leave The Field Blank To Skip This Filter ");
+        String startDateString = Console.promptForString("Start Date In This Format (yyyy-MM-dd): ");
+        String endDateString = Console.promptForString("End Date In This Format (yyyy-MM-dd): ");
+        String description = Console.promptForString("Description: ");
+        String vendor = Console.promptForString("Vendor: ");
+        String amountString = Console.promptForString("Amount: ");
+
+        for (int i = transactions.size() - 1; i >= 0; i--) {
+
+            Transaction t = transactions.get(i);
+
+            LocalDate transactionDate = LocalDate.parse(t.getDate());
+
+            if (!startDateString.isBlank()) {
+                LocalDate startDate = LocalDate.parse(startDateString);
+
+                if (transactionDate.isBefore(startDate)) {
+                    continue;
+                }
+            }
+
+            if (!endDateString.isBlank()) {
+                LocalDate endDate = LocalDate.parse(endDateString);
+
+                if (transactionDate.isAfter(endDate)) {
+                    continue;
+                }
+            }
+
+            if (!description.isBlank() && !t.getDescription().toLowerCase().contains(description.toLowerCase())) {
+                continue;
+            }
+
+            if (!vendor.isBlank() && !t.getVendor().toLowerCase().contains(vendor.toLowerCase())) {
+                continue;
+            }
+
+            if (!amountString.isBlank()) {
+                double amount = Double.parseDouble(amountString);
+
+                if (t.getAmount() != amount) {
+                    continue;
+                }
+            }
+
+            System.out.println(t);
+        }
 
     }
 

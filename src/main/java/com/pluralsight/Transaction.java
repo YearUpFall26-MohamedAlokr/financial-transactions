@@ -25,6 +25,9 @@ public class Transaction {
     public String getDate() {
         return date;
     }
+    public String getVendor() {
+        return vendor;
+    }
     public String toString() {
         return date + "|" + time + "|" + description + "|" + vendor + "|" + amount;
     }
