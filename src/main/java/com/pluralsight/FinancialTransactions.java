@@ -231,6 +231,7 @@ public class FinancialTransactions {
 
     public static void MontToDate(){
         LocalDate MonthStart=LocalDate.now().withDayOfMonth(1);
+
         for(int i=transactions.size() - 1; i >= 0; i--){
             Transaction t = transactions.get(i);
             LocalDate transactionDate=LocalDate.parse(t.getDate());
@@ -258,11 +259,29 @@ public class FinancialTransactions {
     }
 
     public static void YearToDate(){
+        LocalDate StartDayYear=LocalDate.now().withDayOfYear(1);
 
+        for(int i=transactions.size() - 1; i >= 0; i--){
+            Transaction t = transactions.get(i);
+            LocalDate transactionDate=LocalDate.parse(t.getDate());
+
+            if(transactionDate.isAfter(StartDayYear)){
+                System.out.println(t.toString());
+            }
+        }
     }
 
     public static void PreviousYear(){
+        int year=LocalDate.now().getYear()-1;
 
+        for(int i=transactions.size() - 1; i >= 0; i--){
+            Transaction t = transactions.get(i);
+            LocalDate transactionDate=LocalDate.parse(t.getDate());
+
+            if (transactionDate.getYear()==year){
+                System.out.println(t.toString());
+            }
+        }
     }
 
     public static void SearchByVendor(){
