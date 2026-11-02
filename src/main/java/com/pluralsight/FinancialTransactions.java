@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class FinancialTransactions {
 
@@ -16,6 +17,7 @@ public class FinancialTransactions {
         LoadAccount();
         MainMenu();
     }
+
     public static void LoadAccount() {
     try {
         BufferedReader reader = new BufferedReader(new FileReader("transactions.csv"));
@@ -68,7 +70,6 @@ public class FinancialTransactions {
         }
     }
 
-
     public static double MyBalance() {
         double balance = 0;
         for (Transaction t: transactions){
@@ -107,7 +108,7 @@ public class FinancialTransactions {
         System.out.println("_______________________________");
         System.out.println("Your Current Balance is $"+MyBalance());
         System.out.println("_______________________________");
-        System.out.println("** Welcome to FinancialTransactions Menu **");
+        System.out.println("** Welcome to Ledger Menu **");
         System.out.println("1- Enter A To Display All Transactions");
         System.out.println("2- Enter D To Display All Deposits");
         System.out.println("3- Enter P To Display All Payments");
@@ -186,9 +187,86 @@ public class FinancialTransactions {
     }
 
     public static void Reports(){
+        boolean running = true;
+        while(running) {
+            System.out.println("_______________________________");
+            System.out.println("Your Current Balance is $"+MyBalance());
+            System.out.println("_______________________________");
+            System.out.println("** Welcome to Reports Menu **");
+            System.out.println(" 1) Month To Date ");
+            System.out.println(" 2) Previous Month ");
+            System.out.println(" 3) Year To Date");
+            System.out.println(" 4) Previous Year ");
+            System.out.println(" 5) Search by Vendor");
+            System.out.println(" 0) Go Back to the Ledger page");
 
+            int option= Console.promptForInt("Enter Your Action Number: ");
+            switch (option) {
+                case 1:
+                    MontToDate();
+                    break;
+                case 2:
+                    PreviousMonth();
+                    break;
+                case 3:
+                    YearToDate();
+                    break;
+                case 4:
+                    PreviousYear();
+                    break;
+                case 5:
+                    SearchByVendor();
+                    break;
+                case 0:
+                    running=false;
+                    break;
+                default:
+                    System.out.println("Invalid Choice Please Try Again");
+            }
     }
 
 
+
+}
+
+    public static void MontToDate(){
+        LocalDate MonthStart=LocalDate.now().withDayOfMonth(1);
+        for(int i=transactions.size() - 1; i >= 0; i--){
+            Transaction t = transactions.get(i);
+            LocalDate transactionDate=LocalDate.parse(t.getDate());
+
+            if(!transactionDate.isBefore(MonthStart)){
+                System.out.println(t.toString());
+            }
+        }
+    }
+
+    public static void PreviousMonth(){
+        LocalDate FirstDayPeriviousMonth=LocalDate.now().minusMonths(1).withDayOfMonth(1);
+        LocalDate LasttDayPeriviousMonth=LocalDate.now().withDayOfMonth(1).minusDays(1);
+
+        for(int i=transactions.size() - 1; i >= 0; i--){
+            Transaction t = transactions.get(i);
+            LocalDate transactionDate=LocalDate.parse(t.getDate());
+
+            if(!transactionDate.isBefore(FirstDayPeriviousMonth)
+               &&
+               !transactionDate.isAfter(LasttDayPeriviousMonth)){
+                System.out.println(t.toString());
+            }
+        }
+    }
+
+    public static void YearToDate(){
+
+    }
+
+    public static void PreviousYear(){
+
+    }
+
+    public static void SearchByVendor(){
+
+    }
 
 }

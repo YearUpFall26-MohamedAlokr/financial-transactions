@@ -1,6 +1,7 @@
 package com.pluralsight;
 
 public class Transaction {
+
     private String date;
     private String time;
     private String description;
@@ -21,7 +22,9 @@ public class Transaction {
     public double getAmount() {
         return amount;
     }
-
+    public String getDate() {
+        return date;
+    }
     public String toString() {
         return date + "|" + time + "|" + description + "|" + vendor + "|" + amount;
     }
