@@ -17,7 +17,6 @@ public class FinancialTransactions {
         MainMenu();
     }
     public static void LoadAccount() {
-        transactions.clear();
     try {
         BufferedReader reader = new BufferedReader(new FileReader("transactions.csv"));
         String line;
@@ -163,14 +162,12 @@ public class FinancialTransactions {
     }
 
     public static void DisplayAllEntries(){
-        LoadAccount();
         for (int i = transactions.size() - 1; i >= 0; i--) {
             System.out.println(transactions.get(i));
         }
     }
 
     public static void DisplayDeposits(){
-        LoadAccount();
         for (int i = transactions.size() - 1; i >= 0; i--) {
             Transaction t = transactions.get(i);
             if(  t.getAmount()>0 && ( !t.getDescription().equals("Negative Deposit Attempted") )  ){
@@ -180,7 +177,6 @@ public class FinancialTransactions {
     }
 
     public static void DisplayPayments(){
-        LoadAccount();
         for (int i = transactions.size() - 1; i >= 0; i--) {
             Transaction t = transactions.get(i);
             if(  t.getAmount()<0 && ( !t.getDescription().equals("Negative Deposit Attempted") )  ){
