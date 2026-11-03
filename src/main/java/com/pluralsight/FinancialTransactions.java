@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 
 public class FinancialTransactions {
 
@@ -72,11 +70,20 @@ public class FinancialTransactions {
         }
     }
 
-    public static void MyBalance() {
+    public static double getBalance() {
         double balance = 0;
-        for (Transaction t: transactions){
-            balance+=t.getAmount();
+
+        for (Transaction t : transactions) {
+            balance += t.getAmount();
         }
+
+        return balance;
+    }
+
+    public static void MyBalance() {
+
+        double balance = getBalance();
+
         if (balance >= 0) {
             System.out.println(Console.GREEN +
                     "Current Balance: $" + balance +
@@ -86,7 +93,7 @@ public class FinancialTransactions {
                     "Current Balance: $" + balance +
                     Console.RESET);
         }
-}
+    }
 
     public static void AddDeposit() {
 
@@ -276,7 +283,7 @@ public class FinancialTransactions {
             Transaction t = transactions.get(i);
             LocalDate transactionDate=LocalDate.parse(t.getDate());
 
-            if(transactionDate.isBefore(StartDayYear)){
+            if(!transactionDate.isBefore(StartDayYear)){
                 System.out.println(t.toString());
             }
         }
