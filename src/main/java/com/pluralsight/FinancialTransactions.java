@@ -43,7 +43,7 @@ public class FinancialTransactions {
         boolean running = true;
         while(running) {
             System.out.println("_________________________________");
-            System.out.println("Your Current Balance is $"+MyBalance());
+            MyBalance();
             System.out.println("__________________________________");
             System.out.println("** Welcome to FinancialTransactions Menu **");
             System.out.println("1- Enter D To Add Deposit");
@@ -72,12 +72,20 @@ public class FinancialTransactions {
         }
     }
 
-    public static double MyBalance() {
+    public static void MyBalance() {
         double balance = 0;
         for (Transaction t: transactions){
             balance+=t.getAmount();
-
-        }return balance;
+        }
+        if (balance >= 0) {
+            System.out.println(Console.GREEN +
+                    "Current Balance: $" + balance +
+                    Console.RESET);
+        } else {
+            System.out.println(Console.RED +
+                    "Current Balance: $" + balance +
+                    Console.RESET);
+        }
 }
 
     public static void AddDeposit() {
@@ -108,7 +116,7 @@ public class FinancialTransactions {
     boolean running = true;
     while(running) {
         System.out.println("_______________________________");
-        System.out.println("Your Current Balance is $"+MyBalance());
+        MyBalance();
         System.out.println("_______________________________");
         System.out.println("** Welcome to Ledger Menu **");
         System.out.println("1- Enter A To Display All Transactions");
@@ -147,20 +155,19 @@ public class FinancialTransactions {
         LocalTime time = LocalTime.now();
 
         try {
-            FileWriter writer =
-                    new FileWriter("transactions.csv",true);
+            FileWriter writer = new FileWriter("transactions.csv",true);
 
-            writer.write(date + "|" +
-                    time.withNano(0) + "|" + description + "|" + vendor + "|" + amount + "\n");
+            writer.write(date + "|" + time.withNano(0) + "|" + description
+                    + "|" + vendor + "|" + amount + "\n");
             writer.close();
-            System.out.println("Transaction Saved Successfully.");
+            Console.printGreen("Transaction Saved Successfully.");
             Transaction transaction = new Transaction(date.toString(), time.withNano(0)
                     .toString(), description, vendor, amount);
 
             transactions.add(transaction);
 
         } catch (IOException e) {
-            System.out.println("Error Saving");
+            Console.printRed("Error Saving");
         }
     }
 
@@ -192,7 +199,7 @@ public class FinancialTransactions {
         boolean running = true;
         while(running) {
             System.out.println("_______________________________");
-            System.out.println("Your Current Balance is $"+MyBalance());
+            MyBalance();
             System.out.println("_______________________________");
             System.out.println("** Welcome to Reports Menu **");
             System.out.println(" 1) Month To Date ");

@@ -2,8 +2,11 @@ package com.pluralsight;
 
 import java.util.Scanner;
 
-public class Console {
 
+public class Console {
+    static final String RESET = "\u001B[0m";
+    static final String RED = "\u001B[31m";
+    static final String GREEN = "\u001B[32m";
     private static final Scanner scanner = new Scanner(System.in);
 
     public static String promptForString(String prompt) {
@@ -35,6 +38,7 @@ public class Console {
             }
         }
     }
+
     public static char promptForChar(String prompt) {
 
         while (true) {
@@ -47,5 +51,13 @@ public class Console {
 
             System.out.println("Please enter a single character.");
         }
+    }
+
+    public static void printGreen(String message) {
+        System.out.println(GREEN + message + RESET);
+    }
+
+    public static void printRed(String message) {
+        System.out.println(RED + message + RESET);
     }
 }
