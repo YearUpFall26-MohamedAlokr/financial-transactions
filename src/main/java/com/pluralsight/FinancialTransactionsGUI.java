@@ -20,6 +20,7 @@ public class FinancialTransactionsGUI extends JFrame {
     public FinancialTransactionsGUI() {
 
         setTitle("Financial Transactions");
+        setIconImage(new ImageIcon("C:\\Users\\mohamedalokr\\pluralsight\\capstones\\financial-transactions\\ProgramIcon.png").getImage());
         setSize(900,600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
