@@ -99,17 +99,12 @@ public class FinancialTransactions {
 
     double amount = Console.promptForDouble("Amount: ");
     if (amount < 0){
-        amount = 0;
-        String vendor = "------";
-        String description = "Negative Deposit Attempted";
-        saveTransaction(amount, vendor, description);
-        System.out.println("Negative Amount Detected \nYour Deposit Can't Be Processed");
+        Console.printRed("Negative Amount Detected \nYour Deposit Can't Be Processed");
     }else {
         String vendor = Console.promptForString("Vendor: ");
         String description = Console.promptForString("Description: ");
         saveTransaction(amount, vendor, description);
     }
-
 }
 
     public static void MakePayment(){
