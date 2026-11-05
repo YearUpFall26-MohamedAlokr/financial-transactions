@@ -19,18 +19,23 @@ public class Transaction {
     public String getDescription() {
         return description;
     }
+
     public double getAmount() {
         return amount;
     }
+
     public String getDate() {
         return date;
     }
+
     public String getVendor() {
         return vendor;
     }
+
     public String toString() {
         return date + "|" + time + "|" + description + "|" + vendor + "|" + amount;
     }
+
     public String getTime() {
         return time;
     }

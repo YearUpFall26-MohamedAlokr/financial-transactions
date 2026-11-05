@@ -7,8 +7,8 @@ import java.awt.*;
 public class FinancialTransactionsGUI extends JFrame {
 
     public JLabel balanceLabel;
-    private JTable transactionTable;
-    private DefaultTableModel table;
+    public JTable transactionTable;
+    public DefaultTableModel table;
 
     public static void main(String[] args) {
 
@@ -92,7 +92,7 @@ public class FinancialTransactionsGUI extends JFrame {
         }
     }
 
-    private void loadTransactions() {
+    public void loadTransactions() {
 
         table.setRowCount(0);
 
