@@ -28,6 +28,10 @@ public class Transaction {
         return date;
     }
 
+    public String getTime() {
+        return time;
+    }
+
     public String getVendor() {
         return vendor;
     }
@@ -36,8 +40,6 @@ public class Transaction {
         return date + "|" + time + "|" + description + "|" + vendor + "|" + amount;
     }
 
-    public String getTime() {
-        return time;
-    }
+
 }
 
